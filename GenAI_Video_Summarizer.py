@@ -18,21 +18,30 @@ model = ChatGroq(
 )
 
 #Download Youtube video using yt-dip
-result = subprocess.run(
-  [
-    "yt_dip",
-    "-f", "best[ext=mp4]",
-    "-o", os.path.join(videos_directory, "(%title)s.%(ext)s"),
-    youtube_url
-  ],
-  capture_output=True,
-  text = True
-)
-if result.returncode != 0:
-  raise RuntimeError(f"yt-dip error:\n{result.stderr}"}
+def download_youtube_video(youtube_url):
+  result = subprocess.run(
+    [
+      "yt_dip",
+      "-f", "best[ext=mp4]",
+      "-o", os.path.join(videos_directory, "(%title)s.%(ext)s"),
+      youtube_url
+    ],
+    capture_output=True,
+    text = True
+  )
+  if result.returncode != 0:
+    raise RuntimeError(f"yt-dip error:\n{result.stderr}"}
+  
+  download_files = sorted(
+    os.listdir(videos_directory)<
+    key = lambda x: os.path.getctime(os.path.join(videos_directory, x)),
+    reverse=True
+  )
+  return os.path.join(videos_directory, download_files[0])
 
-download_files = sorted(
-  os.listdir(videos_directory)<
-  key = lambda x: os.path.getctime(os.path.join(videos_directory, x)),
-  reverse=True
-)
+#EXtract frames from the video
+def extract_frames(video_path, interval_seconds=5):
+  for file in os.listdir(frames_directory):
+    os.remove(os.path.join(frames_directory, file))
+
+    video = cv2.Video
