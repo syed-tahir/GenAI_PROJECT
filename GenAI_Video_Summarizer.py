@@ -11,38 +11,38 @@ frames_directory = 'frames/'
 os.makedirs(videos_directory, exist_ok=True)
 os.makedirs(frames_directory, exist_ok=True)
 
-# initialize Groq model
+# Initialize Groq model
 model = ChatGroq(
-  groq_api_key=st.secrets["GROQ_API_KEY"],
-  model_name = "meta-llama/llama-4-scout-17b-16e-instruct"
+    groq_api_key=st.secrets["GROQ_API_KEY"],
+    model_name="meta-llama/llama-4-scout-17b-16e-instruct"
 )
 
-#Download Youtube video using yt-dip
+# Download YouTube video using yt-dlp
 def download_youtube_video(youtube_url):
-  result = subprocess.run(
-    [
-      "yt_dip",
-      "-f", "best[ext=mp4]",
-      "-o", os.path.join(videos_directory, "(%title)s.%(ext)s"),
-      youtube_url
-    ],
-    capture_output=True,
-    text = True
-  )
-  if result.returncode != 0:
-    raise RuntimeError(f"yt-dip error:\n{result.stderr}")
-  
-  download_files = sorted(
-    os.listdir(videos_directory)<
-    key = lambda x: os.path.getctime(os.path.join(videos_directory, x)),
-    reverse=True
-  )
-  return os.path.join(videos_directory, download_files[0])
+    result = subprocess.run(
+        [
+            "yt-dlp",
+            "-f", "best[ext=mp4]",
+            "-o", os.path.join(videos_directory, "%(title)s.%(ext)s"),
+            youtube_url
+        ],
+        capture_output=True,
+        text=True
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"yt-dlp error:\n{result.stderr}")
 
-#EXtract frames from the video
+    downloaded_files = sorted(
+        os.listdir(videos_directory),
+        key=lambda x: os.path.getctime(os.path.join(videos_directory, x)),
+        reverse=True
+    )
+    return os.path.join(videos_directory, downloaded_files[0])
+
+# Extract frames from the video
 def extract_frames(video_path, interval_seconds=5):
-  for file in os.listdir(frames_directory):
-    os.remove(os.path.join(frames_directory, file))
+    for file in os.listdir(frames_directory):
+        os.remove(os.path.join(frames_directory, file))
 
     video = cv2.VideoCapture(video_path)
     fps = int(video.get(cv2.CAP_PROP_FPS))
