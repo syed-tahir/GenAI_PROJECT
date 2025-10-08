@@ -17,3 +17,54 @@
 3. **Transcription:** Audio is converted to text using models like Whisper.
 4. **Summarization:** The transcript is summarized using an LLM (e.g., GPT, LLaMA).
 5. **Output:** Clean, readable summary is displayed.
+
+## 🛠️ Tech Stack
+
+- Python
+- OpenAI Whisper / SpeechRecognition (for transcription)
+- Transformers / LangChain / OpenAI API (for summarization)
+- Streamlit / Flask (for UI, optional)
+- pytube / youtube_dl (for downloading YouTube videos)
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/syed-tahir/GenAI_PROJECT.git
+cd GenAI_PROJECT
+
+pip install -r requirements.txt
+
+## 🧪 Usage
+
+python app.py
+
+Then open the local server (e.g., localhost:8501) and paste the YouTube video URL to generate the summary.
+
+## 🧠 Example
+
+Input:
+🔗 https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+Output:
+"This video discusses the importance of staying motivated, never giving up, and the role of optimism in achieving long-term goals..."
+
+## 📌 Future Enhancements
+
+Add support for multi-language transcription
+
+Enable chapter-wise summarization
+
+Integrate with note-taking apps (Notion, Obsidian, etc.)
+
+Export summaries to PDF or markdown
+
+
+## 🙌 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+## 📄 License
+
+MIT License © 2025 Syed Mohammed Tahir
+
+---
